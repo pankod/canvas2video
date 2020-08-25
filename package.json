@@ -38,6 +38,8 @@
     "typescript": "^3.4.4"
   },
   "dependencies": {
+    "@types/fabric": "^3.6.8",
+    "@types/fluent-ffmpeg": "^2.1.14",
     "fabric": "^4.1.0",
     "ffmpeg-static": "^4.2.7",
     "ffprobe-static": "^3.0.0",
