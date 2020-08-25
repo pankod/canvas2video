@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "dist",
+    "sourceMap": false,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/"],
+      "typings/*": ["src/typings/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/test/**/*.spec.ts"]
+}
