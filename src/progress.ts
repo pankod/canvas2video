@@ -10,7 +10,8 @@ const progressString: (current: number, total: number, showChunk?: boolean) => s
     const str = "-"
         .repeat(barLength)
         .split("")
-        .map((l, i) => (i < percent5 ? "=" : "-"));
+        .map((l, i) => (i < percent5 ? "=" : "-"))
+        .join("");
     return `[${str}] | ${percent.toFixed(2)}% ${showChunk ? `| [${current}/${total}]` : ""}`;
 };
 

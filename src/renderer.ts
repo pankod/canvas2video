@@ -1,5 +1,5 @@
 import fs from "fs";
-import ffmpeg from "fluent-ffmpeg";
+import * as ffmpeg from "fluent-ffmpeg";
 import { fabric } from "fabric";
 import gsap, { TimelineMax } from "gsap";
 import { Readable } from "stream";
@@ -43,7 +43,11 @@ const renderer: Renderer = (config) => {
         const renderFrames = () => {
             anim.progress(currentFrame++ / totalFrames);
             if (currentFrame <= totalFrames) {
-                process.stdout.write(`Rendering ${progressString(currentFrame, totalFrames)}\r`);
+                process.stdout.write(
+                    ` Rendering ${progressString(currentFrame, totalFrames)}${
+                        currentFrame === totalFrames ? "\n" : "\r"
+                    }`,
+                );
                 canvas.renderAll();
                 const buffer = Buffer.from(
                     canvas.toDataURL().replace(/^data:\w+\/\w+;base64,/, ""),

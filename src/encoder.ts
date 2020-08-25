@@ -1,5 +1,5 @@
-import ffmpeg from "fluent-ffmpeg";
-import fs from "fs";
+import * as ffmpeg from "fluent-ffmpeg";
+import * as fs from "fs";
 import { Readable } from "stream";
 import progressString from "./progress";
 
@@ -79,7 +79,8 @@ const encoder: Encoder = (config) => {
 
         command.on("end", function () {
             // TODO: beautify
-            console.log("Processing finished !");
+            console.log("");
+            console.log("Processing complete...");
             resolve(output);
         });
         command.on("progress", function (progress) {
@@ -87,7 +88,7 @@ const encoder: Encoder = (config) => {
                 ? parseFloat((progress.percent as number).toFixed(2))
                 : 0;
             progressString(percent, 100, false);
-            process.stdout.write(`Processing ${progressString(percent, 100, false)}\r`);
+            process.stdout.write(` Processing ${progressString(percent, 100, false)}\r`);
         });
         command.run();
     });
