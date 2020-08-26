@@ -29,7 +29,7 @@ const encoder: Encoder = (config) => {
                 fs.mkdirSync(outDir, { recursive: true });
             }
         } catch (e) {
-            if (!silent) console.log("Could not create/access output directory");
+            if (!silent) console.log("[@pankod/puulr] Could not create/access output directory");
             reject(new Error("Cannot create/access output directory"));
         }
 
@@ -87,13 +87,13 @@ const encoder: Encoder = (config) => {
         command.output(outputStream);
 
         command.on("start", function (commandLine) {
-            if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
+            if (!silent) console.log("[@pankod/puulr] Spawned Ffmpeg with command: " + commandLine);
         });
 
         command.on("end", function () {
             if (!silent) {
                 console.log("");
-                console.log("Processing complete...");
+                console.log("[@pankod/puulr] Processing complete...");
             }
             resolve({
                 path: output,
@@ -107,12 +107,15 @@ const encoder: Encoder = (config) => {
                     ? parseFloat((progress.percent as number).toFixed(2))
                     : 0;
                 progressString(percent, 100, false);
-                process.stdout.write(` Processing ${progressString(percent, 100, false)}\r`);
+                process.stdout.write(
+                    ` [@pankod/puulr] Processing ${progressString(percent, 100, false)}\r`,
+                );
             }
         });
 
         command.on("error", function (err: { message: string }) {
-            if (!silent) console.log("An error occured while processing,", err.message);
+            if (!silent)
+                console.log("[@pankod/puulr] An error occured while processing,", err.message);
             reject(err);
         });
 

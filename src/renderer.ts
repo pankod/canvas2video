@@ -44,9 +44,10 @@ const renderer: Renderer = (config) => {
                 if (currentFrame <= totalFrames) {
                     if (!silent) {
                         process.stdout.write(
-                            ` Rendering ${progressString(currentFrame, totalFrames)}${
-                                currentFrame === totalFrames ? "\n" : "\r"
-                            }`,
+                            ` [@pankod/puulr] Rendering ${progressString(
+                                currentFrame,
+                                totalFrames,
+                            )}${currentFrame === totalFrames ? "\n" : "\r"}`,
                         );
                     }
                     canvas.renderAll();
@@ -57,7 +58,7 @@ const renderer: Renderer = (config) => {
                     stream.push(buffer);
                     renderFrames();
                 } else {
-                    if (!silent) console.log("Rendering complete...");
+                    if (!silent) console.log("[@pankod/puulr] Rendering complete...");
                     stream.push(null);
                     resolve(stream);
                 }
