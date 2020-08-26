@@ -1,34 +1,21 @@
 import * as ffmpeg from "fluent-ffmpeg";
 import * as fs from "fs";
-import { Readable } from "stream";
+import * as path from "path";
+import { Writable } from "stream";
 import progressString from "./progress";
+import { Puulr } from "./types";
 
-type mediaPath = string;
-
-export interface IEncoderConfig {
-    frameStream: Readable;
-    output: mediaPath;
-    backgroundVideo?: {
-        videoPath: mediaPath;
-        inSeconds: number;
-        outSeconds: number;
-    };
-    fps: {
-        input: number;
-        output: number;
-    };
-}
-
-type Encoder = (config: IEncoderConfig) => Promise<mediaPath>;
-
-const encoder: Encoder = (config) => {
+const encoder: Puulr.Encoder = (config) => {
     return new Promise((resolve, reject) => {
-        const { frameStream, output, backgroundVideo, fps } = config;
-        // TODO: change this
-        const dir = "./output";
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
+        const { frameStream, output, backgroundVideo, fps, silent = true } = config;
+        const outputStream = new Writable();
+
+        // Directory check start
+        const outDir = path.dirname(output);
+        if (!fs.existsSync(outDir)) {
+            fs.mkdirSync(outDir, { recursive: true });
         }
+        // Directory check end
 
         const command = ffmpeg();
 
@@ -70,26 +57,38 @@ const encoder: Encoder = (config) => {
             );
         }
 
-        command.output(output);
+        command.output(output).output(outputStream);
 
         command.on("start", function (commandLine) {
-            // TODO: beautify
-            console.log("Spawned Ffmpeg with command: " + commandLine);
+            if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
         });
 
         command.on("end", function () {
-            // TODO: beautify
-            console.log("");
-            console.log("Processing complete...");
-            resolve(output);
+            if (!silent) {
+                console.log("");
+                console.log("Processing complete...");
+            }
+            resolve({
+                path: output,
+                stream: outputStream,
+            });
         });
+
         command.on("progress", function (progress) {
-            var percent = progress.percent
-                ? parseFloat((progress.percent as number).toFixed(2))
-                : 0;
-            progressString(percent, 100, false);
-            process.stdout.write(` Processing ${progressString(percent, 100, false)}\r`);
+            if (!silent) {
+                var percent = progress.percent
+                    ? parseFloat((progress.percent as number).toFixed(2))
+                    : 0;
+                progressString(percent, 100, false);
+                process.stdout.write(` Processing ${progressString(percent, 100, false)}\r`);
+            }
         });
+
+        command.on("error", function (err: { message: string }) {
+            if (!silent) console.log("An error occured while processing,", err.message);
+            reject(err);
+        });
+
         command.run();
     });
 };

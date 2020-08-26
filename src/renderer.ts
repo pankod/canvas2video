@@ -5,72 +5,63 @@ import gsap, { TimelineMax } from "gsap";
 import { Readable } from "stream";
 import progressString from "./progress";
 
-// TODO: add declarations
 import * as ffmpegPath from "ffmpeg-static";
 import * as ffprobe from "ffprobe-static";
+
+import { Puulr } from "./types";
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobe.path);
 
-type makeSceneFunction = (
-    fabricInstance: typeof fabric,
-    canvas: fabric.StaticCanvas,
-    anim: TimelineMax,
-    compose: () => void,
-) => void;
+const renderer: Puulr.Renderer = (config) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const { width, height, fps, makeScene, silent = true } = config;
+            const canvas = new fabric.StaticCanvas(null, { width, height });
+            const anim = new TimelineMax({ paused: true });
+            const stream = new Readable();
 
-export interface IRendererConfig {
-    width: number;
-    height: number;
-    fps: number;
-    makeScene: makeSceneFunction;
-}
+            let totalFrames: number;
+            let currentFrame = 0;
 
-type Renderer = (config: IRendererConfig) => Promise<Readable>;
+            gsap.ticker.fps(fps);
 
-const renderer: Renderer = (config) => {
-    return new Promise<Readable>((resolve, reject) => {
-        const { width, height, fps, makeScene } = config;
-        const canvas = new fabric.StaticCanvas(null, { width, height });
-        const anim = new TimelineMax({ paused: true });
-        const stream = new Readable();
+            const renderFrames = () => {
+                anim.progress(currentFrame++ / totalFrames);
+                if (currentFrame <= totalFrames) {
+                    if (!silent) {
+                        process.stdout.write(
+                            ` Rendering ${progressString(currentFrame, totalFrames)}${
+                                currentFrame === totalFrames ? "\n" : "\r"
+                            }`,
+                        );
+                    }
+                    canvas.renderAll();
+                    const buffer = Buffer.from(
+                        canvas.toDataURL().replace(/^data:\w+\/\w+;base64,/, ""),
+                        "base64",
+                    );
+                    stream.push(buffer);
+                    renderFrames();
+                } else {
+                    if (!silent) console.log("Rendering complete...");
+                    stream.push(null);
+                    resolve(stream);
+                }
+            };
 
-        let totalFrames: number;
-        let currentFrame = 0;
+            makeScene(fabric, canvas, anim, () => {
+                const duration = anim.duration();
+                totalFrames = Math.ceil((duration / 1) * fps);
 
-        gsap.ticker.fps(fps);
-
-        const renderFrames = () => {
-            anim.progress(currentFrame++ / totalFrames);
-            if (currentFrame <= totalFrames) {
-                process.stdout.write(
-                    ` Rendering ${progressString(currentFrame, totalFrames)}${
-                        currentFrame === totalFrames ? "\n" : "\r"
-                    }`,
-                );
-                canvas.renderAll();
-                const buffer = Buffer.from(
-                    canvas.toDataURL().replace(/^data:\w+\/\w+;base64,/, ""),
-                    "base64",
-                );
-                stream.push(buffer);
+                if (totalFrames === 0) {
+                    totalFrames = 1;
+                }
                 renderFrames();
-            } else {
-                console.log("Rendering complete...");
-                stream.push(null);
-                resolve(stream);
-            }
-        };
-
-        makeScene(fabric, canvas, anim, () => {
-            const duration = anim.duration();
-            totalFrames = Math.ceil((duration / 1) * fps);
-
-            if (totalFrames === 0) {
-                totalFrames = 1;
-            }
-            renderFrames();
-        });
+            });
+        } catch (e) {
+            reject(new Error("An error occured in the renderer."));
+        }
     });
 };
 
