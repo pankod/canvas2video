@@ -9,9 +9,11 @@
     },
     "author": "",
     "license": "ISC",
-    "dependencies": {
-        "gsap": "^3.5.0",
+    "devDependencies": {
         "ts-node": "^9.0.0",
         "typescript": "^4.0.2"
+    },
+    "dependencies": {
+        "gsap": "^3.5.0"
     }
 }
