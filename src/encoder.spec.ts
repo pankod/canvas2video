@@ -11,7 +11,7 @@ describe("encoder function tests", () => {
             height: 1080,
             fps: 30,
             makeScene: (fabric, canvas, anim, compose) => {
-                var text = new fabric.Text("Hello world", {
+                const text = new fabric.Text("Hello world", {
                     left: 200,
                     top: 400,
                     fontSize: 100,
@@ -28,7 +28,7 @@ describe("encoder function tests", () => {
     it("resolves when frameStream is a Readable stream", async () => {
         const output = encoder({
             frameStream: stream,
-            output: "output/test.mp4",
+            output: "test/output/test.mp4",
             fps: { input: 30, output: 30 },
         });
         expect(output).resolves.toHaveProperty("path");
@@ -39,7 +39,7 @@ describe("encoder function tests", () => {
         return expect(
             encoder({
                 frameStream: undefined,
-                output: "output/test.mp4",
+                output: "test/output/test.mp4",
                 fps: { input: 30, output: 30 },
             }),
         ).rejects.toMatchObject(
@@ -61,7 +61,7 @@ describe("encoder function tests", () => {
     it("throws correct error message when fps is not correctly send", async () => {
         const output = encoder({
             frameStream: stream,
-            output: "test-output/demo.mp4",
+            output: "test/output/demo.mp4",
             fps: undefined,
         });
         expect(output).rejects.toMatchObject(
@@ -72,10 +72,10 @@ describe("encoder function tests", () => {
     it("throws correct error message when backgroundVideo is not correctly send", async () => {
         const output = encoder({
             frameStream: stream,
-            output: "test-output/demo.mp4",
+            output: "test/output/demo.mp4",
             fps: { input: 30, output: 30 },
             backgroundVideo: {
-                videoPath: "test-output/base.mp4",
+                videoPath: "test/output/base.mp4",
                 inSeconds: undefined,
                 outSeconds: undefined,
             },
