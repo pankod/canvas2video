@@ -6,7 +6,7 @@ const progressString: (current: number, total: number, showChunk?: boolean) => s
 ) => {
     const barLength = 20;
     const percent = (current * 100) / total;
-    const percent5 = Math.round(percent / (barLength / 5));
+    const percent5 = Math.round((percent * barLength) / 100);
     const str = "-"
         .repeat(barLength)
         .split("")
