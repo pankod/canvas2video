@@ -1,4 +1,3 @@
-import fs from "fs";
 import * as ffmpeg from "fluent-ffmpeg";
 import { fabric } from "fabric";
 import gsap, { TimelineMax } from "gsap";
@@ -19,6 +18,21 @@ const renderer: Renderer = (config) => {
             const canvas = new fabric.StaticCanvas(null, { width, height });
             const anim = new TimelineMax({ paused: true });
             const stream = new Readable();
+
+            if (!(typeof width === "number")) {
+                reject(new Error(`width should be a number. You provided ${typeof width}`));
+            }
+            if (!(typeof height === "number")) {
+                reject(new Error(`height should be a number. You provided ${typeof height}`));
+            }
+            if (!(typeof fps === "number")) {
+                reject(new Error(`fps should be a number. You provided ${typeof fps}`));
+            }
+            if (!(typeof makeScene === "function")) {
+                reject(
+                    new Error(`makeScene should be a function. You provided ${typeof makeScene}`),
+                );
+            }
 
             let totalFrames: number;
             let currentFrame = 0;
