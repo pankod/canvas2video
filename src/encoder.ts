@@ -1,21 +1,24 @@
 import * as ffmpeg from "fluent-ffmpeg";
 import * as fs from "fs";
 import * as path from "path";
-import { Writable } from "stream";
 import progressString from "./progress";
 import { Puulr } from "./types";
 
 const encoder: Puulr.Encoder = (config) => {
     return new Promise((resolve, reject) => {
         const { frameStream, output, backgroundVideo, fps, silent = true } = config;
-        const outputStream = new Writable();
 
-        // Directory check start
-        const outDir = path.dirname(output);
-        if (!fs.existsSync(outDir)) {
-            fs.mkdirSync(outDir, { recursive: true });
+        try {
+            const outDir = path.dirname(output);
+            if (!fs.existsSync(outDir)) {
+                fs.mkdirSync(outDir, { recursive: true });
+            }
+        } catch (e) {
+            if (!silent) console.log("Could not create/access output directory");
+            reject(new Error("Cannot create/access output directory"));
         }
-        // Directory check end
+
+        const outputStream = fs.createWriteStream(output);
 
         const command = ffmpeg();
 
@@ -57,7 +60,7 @@ const encoder: Puulr.Encoder = (config) => {
             );
         }
 
-        command.output(output).output(outputStream);
+        command.output(outputStream);
 
         command.on("start", function (commandLine) {
             if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
