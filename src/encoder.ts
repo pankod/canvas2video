@@ -60,7 +60,7 @@ const encoder: Encoder = (config) => {
         ]);
         command.fps(fps.output);
 
-        if (backgroundVideo) {
+        if (!!backgroundVideo) {
             command.complexFilter(
                 [
                     "[1:v]setpts=PTS+" + backgroundVideo.inSeconds + "/TB[out]",
@@ -69,7 +69,7 @@ const encoder: Encoder = (config) => {
                         options: {
                             enable:
                                 "between(t," +
-                                backgroundVideo.outSeconds +
+                                backgroundVideo.inSeconds +
                                 "," +
                                 backgroundVideo.outSeconds +
                                 ")",
@@ -84,7 +84,7 @@ const encoder: Encoder = (config) => {
             );
         }
 
-        command.output(outputStream);
+        command.output(output);
 
         command.on("start", function (commandLine) {
             if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
