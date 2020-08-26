@@ -1,0 +1,17 @@
+{
+    "name": "puulr_example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start:hello-world": "ts-node src/hello-world.ts",
+        "start:weather": "ts-node src/weather.ts"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "gsap": "^3.5.0",
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.2"
+    }
+}
