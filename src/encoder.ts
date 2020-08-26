@@ -84,7 +84,7 @@ const encoder: Encoder = (config) => {
             );
         }
 
-        command.output(output);
+        command.output(outputStream);
 
         command.on("start", function (commandLine) {
             if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
