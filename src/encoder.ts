@@ -3,10 +3,25 @@ import * as fs from "fs";
 import * as path from "path";
 import progressString from "./progress";
 import { Puulr } from "./types";
+import { Readable } from "stream";
 
 const encoder: Puulr.Encoder = (config) => {
     return new Promise((resolve, reject) => {
         const { frameStream, output, backgroundVideo, fps, silent = true } = config;
+
+        if (!(frameStream instanceof Readable)) {
+            reject(
+                new Error(
+                    `frameStream should be in type Readable. You provided ${typeof frameStream}`,
+                ),
+            );
+        }
+        if (!(typeof output === "string")) {
+            reject(new Error(`output should be a string. You provided ${typeof output}`));
+        }
+        if (!(fps && fps.input && fps.output)) {
+            reject(new Error(`fps should be an object with input and output properties`));
+        }
 
         try {
             const outDir = path.dirname(output);
@@ -23,6 +38,15 @@ const encoder: Puulr.Encoder = (config) => {
         const command = ffmpeg();
 
         if (backgroundVideo) {
+            if (
+                !(
+                    backgroundVideo.inSeconds &&
+                    backgroundVideo.outSeconds &&
+                    backgroundVideo.videoPath
+                )
+            ) {
+                reject(new Error("backgroundVideo property is not correctly set"));
+            }
             command.input(backgroundVideo.videoPath);
         }
 
