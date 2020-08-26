@@ -7,13 +7,12 @@ import progressString from "./progress";
 
 import * as ffmpegPath from "ffmpeg-static";
 import * as ffprobe from "ffprobe-static";
-
-import { Puulr } from "./types";
+import { Renderer } from "./types";
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobe.path);
 
-const renderer: Puulr.Renderer = (config) => {
+const renderer: Renderer = (config) => {
     return new Promise((resolve, reject) => {
         try {
             const { width, height, fps, makeScene, silent = true } = config;

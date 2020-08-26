@@ -2,10 +2,10 @@ import * as ffmpeg from "fluent-ffmpeg";
 import * as fs from "fs";
 import * as path from "path";
 import progressString from "./progress";
-import { Puulr } from "./types";
 import { Readable } from "stream";
+import { Encoder } from "./types";
 
-const encoder: Puulr.Encoder = (config) => {
+const encoder: Encoder = (config) => {
     return new Promise((resolve, reject) => {
         const { frameStream, output, backgroundVideo, fps, silent = true } = config;
 
