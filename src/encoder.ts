@@ -5,48 +5,53 @@ import * as cliProgress from "cli-progress";
 import { Readable } from "stream";
 import { Encoder } from "./types";
 
+const typeCheck = (reject: (reason?: any) => void, config) => {
+    const { frameStream, output, backgroundVideo, fps } = config;
+    if (!(frameStream instanceof Readable)) {
+        reject(
+            new Error(`frameStream should be in type Readable. You provided ${typeof frameStream}`),
+        );
+    }
+    if (!(typeof output === "string")) {
+        reject(new Error(`output should be a string. You provided ${typeof output}`));
+    }
+    if (!(fps && fps.input && fps.output)) {
+        reject(new Error(`fps should be an object with input and output properties`));
+    }
+    if (backgroundVideo) {
+        if (
+            !(backgroundVideo.inSeconds && backgroundVideo.outSeconds && backgroundVideo.videoPath)
+        ) {
+            reject(new Error("backgroundVideo property is not correctly set"));
+        }
+    }
+};
+
+const createDir = (reject: (reason?: any) => void, silent: boolean, output: string) => {
+    try {
+        const outDir = path.dirname(output);
+        if (!fs.existsSync(outDir)) {
+            fs.mkdirSync(outDir, { recursive: true });
+        }
+    } catch (e) {
+        if (!silent) console.log("Could not create/access output directory");
+        reject(new Error("Cannot create/access output directory"));
+    }
+};
+
 const encoder: Encoder = (config) => {
     return new Promise((resolve, reject) => {
         const { frameStream, output, backgroundVideo, fps, silent = true } = config;
 
-        if (!(frameStream instanceof Readable)) {
-            reject(
-                new Error(
-                    `frameStream should be in type Readable. You provided ${typeof frameStream}`,
-                ),
-            );
-        }
-        if (!(typeof output === "string")) {
-            reject(new Error(`output should be a string. You provided ${typeof output}`));
-        }
-        if (!(fps && fps.input && fps.output)) {
-            reject(new Error(`fps should be an object with input and output properties`));
-        }
+        typeCheck(reject, config);
 
-        try {
-            const outDir = path.dirname(output);
-            if (!fs.existsSync(outDir)) {
-                fs.mkdirSync(outDir, { recursive: true });
-            }
-        } catch (e) {
-            if (!silent) console.log("Could not create/access output directory");
-            reject(new Error("Cannot create/access output directory"));
-        }
+        createDir(reject, silent, output);
 
         const outputStream = fs.createWriteStream(output);
 
         const command = ffmpeg();
 
         if (backgroundVideo) {
-            if (
-                !(
-                    backgroundVideo.inSeconds &&
-                    backgroundVideo.outSeconds &&
-                    backgroundVideo.videoPath
-                )
-            ) {
-                reject(new Error("backgroundVideo property is not correctly set"));
-            }
             command.input(backgroundVideo.videoPath);
         }
 

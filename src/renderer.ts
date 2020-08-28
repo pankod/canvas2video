@@ -11,6 +11,22 @@ import { Renderer } from "./types";
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobe.path);
 
+const typeCheck = (reject: (reason?: any) => void, config: any) => {
+    const { width, height, fps, makeScene } = config;
+    if (!(typeof width === "number")) {
+        reject(new Error(`width should be a number. You provided ${typeof width}`));
+    }
+    if (!(typeof height === "number")) {
+        reject(new Error(`height should be a number. You provided ${typeof height}`));
+    }
+    if (!(typeof fps === "number")) {
+        reject(new Error(`fps should be a number. You provided ${typeof fps}`));
+    }
+    if (!(typeof makeScene === "function")) {
+        reject(new Error(`makeScene should be a function. You provided ${typeof makeScene}`));
+    }
+};
+
 const renderer: Renderer = (config) => {
     return new Promise((resolve, reject) => {
         try {
@@ -19,20 +35,7 @@ const renderer: Renderer = (config) => {
             const anim = new TimelineMax({ paused: true });
             const stream = new Readable();
 
-            if (!(typeof width === "number")) {
-                reject(new Error(`width should be a number. You provided ${typeof width}`));
-            }
-            if (!(typeof height === "number")) {
-                reject(new Error(`height should be a number. You provided ${typeof height}`));
-            }
-            if (!(typeof fps === "number")) {
-                reject(new Error(`fps should be a number. You provided ${typeof fps}`));
-            }
-            if (!(typeof makeScene === "function")) {
-                reject(
-                    new Error(`makeScene should be a function. You provided ${typeof makeScene}`),
-                );
-            }
+            typeCheck(reject, config);
 
             let totalFrames: number;
             let currentFrame = 0;
