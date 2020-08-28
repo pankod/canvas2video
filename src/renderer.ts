@@ -2,7 +2,7 @@ import * as ffmpeg from "fluent-ffmpeg";
 import { fabric } from "fabric";
 import gsap, { TimelineMax } from "gsap";
 import { Readable } from "stream";
-import progressString from "./progress";
+import * as cliProgress from "cli-progress";
 
 import * as ffmpegPath from "ffmpeg-static";
 import * as ffprobe from "ffprobe-static";
@@ -39,16 +39,18 @@ const renderer: Renderer = (config) => {
 
             gsap.ticker.fps(fps);
 
+            const progressBar = new cliProgress.SingleBar({
+                format: `Rendering | {bar} | {percentage}%`,
+                barCompleteChar: "\u2588",
+                barIncompleteChar: "\u2591",
+                hideCursor: true,
+            });
+
             const renderFrames = () => {
                 anim.progress(currentFrame++ / totalFrames);
                 if (currentFrame <= totalFrames) {
                     if (!silent) {
-                        process.stdout.write(
-                            ` [@pankod/puulr] Rendering ${progressString(
-                                currentFrame,
-                                totalFrames,
-                            )}${currentFrame === totalFrames ? "\n" : "\r"}`,
-                        );
+                        progressBar.update(currentFrame);
                     }
                     canvas.renderAll();
                     const buffer = Buffer.from(
@@ -58,7 +60,10 @@ const renderer: Renderer = (config) => {
                     stream.push(buffer);
                     renderFrames();
                 } else {
-                    if (!silent) console.log("[@pankod/puulr] Rendering complete...");
+                    if (!silent) {
+                        console.log("Rendering complete...");
+                        progressBar.stop();
+                    }
                     stream.push(null);
                     resolve(stream);
                 }
@@ -70,6 +75,9 @@ const renderer: Renderer = (config) => {
 
                 if (totalFrames === 0) {
                     totalFrames = 1;
+                }
+                if (!silent) {
+                    progressBar.start(totalFrames, 0);
                 }
                 renderFrames();
             });

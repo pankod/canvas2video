@@ -35,6 +35,19 @@ describe("encoder function tests", () => {
         expect(output).resolves.toHaveProperty("stream");
     });
 
+    it("logs if silent is false", async () => {
+        const mockedLog = jest.fn();
+        console.log = mockedLog;
+        const output = encoder({
+            silent: false,
+            frameStream: stream,
+            output: "test/output/test.mp4",
+            fps: { input: 30, output: 30 },
+        }).then(() => {
+            expect(mockedLog).toHaveBeenCalled();
+        });
+    });
+
     it("reject when no frameStream is present", async () => {
         return expect(
             encoder({
@@ -45,6 +58,15 @@ describe("encoder function tests", () => {
         ).rejects.toMatchObject(
             new Error("frameStream should be in type Readable. You provided undefined"),
         );
+    });
+
+    it("throws when ffmpeg fails", async () => {
+        const output = encoder({
+            frameStream: stream,
+            output: "test/output/test.mp4",
+            fps: { input: -30, output: -30 },
+        });
+        expect(output).rejects.toThrow();
     });
 
     it("throws correct error message when output is not correctly send", async () => {

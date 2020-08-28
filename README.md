@@ -4,18 +4,18 @@
 </div>
 
 <br/>
-<div align="center"> <h3><b>Puulr Canvas to Video</b><h3> </div>
+<div align="center"> <h3><b>@pankod/canvas2video</b></h3><h3><b>Canvas to Video</b><h3> </div>
 
 <div align="center"> Simplifies the way to create a video from canvas content </div>
 <br/>
 <div align="center">
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/maintainability)](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/test_coverage)](https://codeclimate.com/github/pankod/puulr/test_coverage)
-[![npm version](https://img.shields.io/npm/v/@pankod/puulr.svg)](https://www.npmjs.com/package/@pankod/puulr)
-![npm](https://img.shields.io/npm/dw/@pankod/puulr)
-[![dependencies Status](https://david-dm.org/pankod/puulr/status.svg)](https://david-dm.org/pankod/puulr)
-[![dev-dependencies Status](https://david-dm.org/pankod/puulr/dev-status.svg)](https://david-dm.org/pankod/puulr?type=dev)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/test_coverage)](https://codeclimate.com/github/pankod/canvas2video/test_coverage)
+[![npm version](https://img.shields.io/npm/v/@pankod/canvas2video.svg)](https://www.npmjs.com/package/@pankod/canvas2video)
+![npm](https://img.shields.io/npm/dw/@pankod/canvas2video)
+[![dependencies Status](https://david-dm.org/pankod/canvas2video/status.svg)](https://david-dm.org/pankod/canvas2video)
+[![dev-dependencies Status](https://david-dm.org/pankod/canvas2video/dev-status.svg)](https://david-dm.org/pankod/canvas2video?type=dev)
 
 </div>
 <div align="center">
@@ -26,20 +26,20 @@
 
 ## About
 
-Puulr helps you to create videos with ease by using [gsap](https://github.com/greensock/GSAP) and [fabric](https://github.com/fabricjs/fabric.js) libraries.
+@pankod/canvas2video helps you to create videos with ease by using [gsap](https://github.com/greensock/GSAP) and [fabric](https://github.com/fabricjs/fabric.js) libraries.
 
 ## Getting started
 
 To install the module, run the following in the command line:
 
 ```bash
-npm install puulr --save
+npm install @pankod/canvas2video --save
 ```
 
 or
 
 ```bash
-yarn add puulr
+yarn add @pankod/canvas2video
 ```
 
 ## Usage
@@ -58,12 +58,12 @@ For more detailed usage, checkout our examples.
  <img width="600" src="media/pullr-gif.gif" >
 </div>
 
-We've provided two examples to demonstrate how puulr works and what can be done. See [examples](./examples)
+We've provided two examples to demonstrate how canvas2video works and what can be done. See [examples](./examples)
 
 ### Installation
 
 ```bash
-git clone https://github.com/pankod/puulr.git
+git clone https://github.com/pankod/canvas2video.git
 cd examples
 npm i
 ```

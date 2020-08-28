@@ -1,7 +1,7 @@
 {
-    "name": "@pankod/puulr",
+    "name": "@pankod/canvas2video",
     "version": "1.0.0",
-    "description": "Puul video renderer",
+    "description": "canvas to video renderer",
     "main": "dist/index.js",
     "types": "dist/typings/index.d.ts",
     "scripts": {
@@ -13,14 +13,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/pankod/puulr.git"
+        "url": "git+https://github.com/pankod/canvas2video.git"
     },
     "author": "Pankod Inc.",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/pankod/puulr/issues"
+        "url": "https://github.com/pankod/canvas2video/issues"
     },
-    "homepage": "https://github.com/pankod/puulr#readme",
+    "homepage": "https://github.com/pankod/canvas2video#readme",
     "keywords": [
         "canvas",
         "video",
@@ -33,6 +33,7 @@
         "@types/node": "^11.13.6",
         "@types/fabric": "^3.6.8",
         "@types/fluent-ffmpeg": "^2.1.14",
+        "@types/cli-progress": "^3.8.0",
         "jest": "^24.7.1",
         "nodemon": "^1.18.11",
         "rimraf": "^2.6.3",
@@ -41,6 +42,7 @@
         "typescript": "^3.4.4"
     },
     "dependencies": {
+        "cli-progress": "^3.8.2",
         "fabric": "^4.1.0",
         "ffmpeg-static": "^4.2.7",
         "ffprobe-static": "^3.0.0",

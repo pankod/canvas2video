@@ -1,4 +1,4 @@
-import { renderer, encoder } from "@pankod/puulr";
+import { renderer, encoder } from "@pankod/canvas2video";
 import { Power3 } from "gsap";
 
 const helloWorld = async () => {

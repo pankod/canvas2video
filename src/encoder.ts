@@ -1,7 +1,7 @@
 import * as ffmpeg from "fluent-ffmpeg";
 import * as fs from "fs";
 import * as path from "path";
-import progressString from "./progress";
+import * as cliProgress from "cli-progress";
 import { Readable } from "stream";
 import { Encoder } from "./types";
 
@@ -29,7 +29,7 @@ const encoder: Encoder = (config) => {
                 fs.mkdirSync(outDir, { recursive: true });
             }
         } catch (e) {
-            if (!silent) console.log("[@pankod/puulr] Could not create/access output directory");
+            if (!silent) console.log("Could not create/access output directory");
             reject(new Error("Cannot create/access output directory"));
         }
 
@@ -86,14 +86,22 @@ const encoder: Encoder = (config) => {
 
         command.output(outputStream);
 
+        const progressBar = new cliProgress.SingleBar({
+            format: `Rendering | {bar} | {percentage}%`,
+            barCompleteChar: "\u2588",
+            barIncompleteChar: "\u2591",
+            hideCursor: true,
+        });
+
         command.on("start", function (commandLine) {
-            if (!silent) console.log("[@pankod/puulr] Spawned Ffmpeg with command: " + commandLine);
+            if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
+            if (!silent) progressBar.start(100, 0);
         });
 
         command.on("end", function () {
             if (!silent) {
-                console.log("");
-                console.log("[@pankod/puulr] Processing complete...");
+                progressBar.stop();
+                console.log("Processing complete...");
             }
             resolve({
                 path: output,
@@ -103,20 +111,16 @@ const encoder: Encoder = (config) => {
 
         command.on("progress", function (progress) {
             if (!silent) {
-                var percent = progress.percent
+                const percent = progress.percent
                     ? parseFloat((progress.percent as number).toFixed(2))
                     : 0;
-                progressString(percent, 100, false);
-                process.stdout.write(
-                    ` [@pankod/puulr] Processing ${progressString(percent, 100, false)}\r`,
-                );
+                progressBar.update(percent);
             }
         });
 
         command.on("error", function (err: { message: string }) {
-            if (!silent)
-                console.log("[@pankod/puulr] An error occured while processing,", err.message);
-            reject(err);
+            if (!silent) console.log("An error occured while processing,", err.message);
+            reject(new Error(err.message));
         });
 
         command.run();

@@ -1,5 +1,4 @@
 import { Power3 } from "gsap";
-import encoder from "./encoder";
 import renderer from "./renderer";
 
 describe("encoder function tests", () => {
@@ -23,6 +22,33 @@ describe("encoder function tests", () => {
         });
 
         expect(stream).resolves.toHaveProperty("constructor");
+        expect((await stream).constructor.name).toBe("Readable");
+    });
+
+    it("logs the progress into console when silent is false", async () => {
+        const mockedLog = jest.fn();
+        console.log = mockedLog;
+        const stream = renderer({
+            silent: false,
+            width: 1920,
+            height: 1080,
+            fps: 30,
+            makeScene: (fabric, canvas, anim, compose) => {
+                const text = new fabric.Text("Hello world", {
+                    left: 200,
+                    top: 400,
+                    fontSize: 100,
+                    fill: "#f99339",
+                    angle: 0,
+                });
+                canvas.add(text);
+                anim.to(text, { duration: 1, left: 400, angle: 360, ease: Power3.easeOut });
+                compose();
+            },
+        });
+
+        expect(stream).resolves.toHaveProperty("constructor");
+        expect(mockedLog).toHaveBeenCalled();
         expect((await stream).constructor.name).toBe("Readable");
     });
 
