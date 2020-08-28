@@ -169,7 +169,7 @@ renderer({
 | --------------------------------- | ---------- | ----------------------------------- |
 | **frameStream** <br> \*_required_ | `Readable` | Output of your `renderer` call      |
 | **output** <br> \*_required_      | `string`   | Your output file path               |
-| **fps\*** <br> \*_required_       | `Object`   | `{ input: number, output: number }` |
+| **fps** <br> \*_required_         | `Object`   | `{ input: number, output: number }` |
 | **backgroundVideo**               | `Object`   | [See below](#backgroundVideo)       |
 
 <br/>
