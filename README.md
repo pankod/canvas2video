@@ -10,8 +10,8 @@
 <br/>
 <div align="center">
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/maintainability)](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/e298d0770a36e222a6b3/test_coverage)](https://codeclimate.com/github/pankod/canvas2video/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ce77e17d733e937fbf3b/maintainability)](https://codeclimate.com/github/pankod/canvas2video/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ce77e17d733e937fbf3b/test_coverage)](https://codeclimate.com/github/pankod/canvas2video/test_coverage)
 [![npm version](https://img.shields.io/npm/v/@pankod/canvas2video.svg)](https://www.npmjs.com/package/@pankod/canvas2video)
 ![npm](https://img.shields.io/npm/dw/@pankod/canvas2video)
 [![dependencies Status](https://david-dm.org/pankod/canvas2video/status.svg)](https://david-dm.org/pankod/canvas2video)
@@ -50,6 +50,46 @@ Define canvas properties and create stream with makeScene function by using fabr
 
 You can also define a background video in `encoder` function which will be applied to your canvas with a beautiful filter.
 
+```js
+import { renderer, encoder } from "@pankod/canvas2video";
+
+const helloWorld = async () => {
+    const stream = await renderer({
+        silent: false,
+        width: 1920,
+        height: 1080,
+        fps: 30,
+        makeScene: (fabric, canvas, anim, compose) => {
+            var text = new fabric.Text("Hello world", {
+                left: 400,
+                top: 400,
+                fontSize: 100,
+                fill: "#f99339",
+                angle: 0,
+            });
+            canvas.add(text);
+            anim.to(text, {
+                duration: 1,
+                angle: 360,
+                ease: Power3.easeOut,
+            });
+            compose();
+        },
+    });
+
+    const output = await encoder({
+        silent: false,
+        frameStream: stream,
+        output: "output/hello-world.mp4",
+        fps: {
+            input: 30,
+            output: 30,
+        },
+    });
+    console.log("process done,", output.path);
+};
+```
+
 For more detailed usage, checkout our examples.
 
 ## Examples
@@ -58,9 +98,11 @@ For more detailed usage, checkout our examples.
  <img width="600" src="media/pullr-gif.gif" >
 </div>
 
+<br/>
+
 We've provided two examples to demonstrate how canvas2video works and what can be done. See [examples](./examples)
 
-### Installation
+#### **Installation**
 
 ```bash
 git clone https://github.com/pankod/canvas2video.git
@@ -68,13 +110,13 @@ cd examples
 npm i
 ```
 
-### Hello World
+#### **Hello World**
 
 ```bash
 npm run start:hello-world
 ```
 
-### Weather
+#### **Weather**
 
 ```bash
 npm run start:weather
@@ -86,12 +128,12 @@ npm run start:weather
 
 ### **Renderer**
 
-| Properties                        | Type       | Description                          |
-| --------------------------------- | ---------- | ------------------------------------ |
-| **width** <br> \*_required_       | `number`   | Width of your canvas                 |
-| **height** <br> \*_required_      | `number`   | Height of your canvas                |
-| **fps** <br> \*_required_         | `number`   | Frames per second of your animations |
-| **makeScene\*** <br> \*_required_ | `function` | [See below](#makeScene)              |
+| Properties                      | Type       | Description                          |
+| ------------------------------- | ---------- | ------------------------------------ |
+| **width** <br> \*_required_     | `number`   | Width of your canvas                 |
+| **height** <br> \*_required_    | `number`   | Height of your canvas                |
+| **fps** <br> \*_required_       | `number`   | Frames per second of your animations |
+| **makeScene** <br> \*_required_ | `function` | [See below](#makeScene)              |
 
 <br/>
 
