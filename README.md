@@ -1,5 +1,5 @@
 <div align="center">
- <img src="media/pankod.png" width="250">
+ <img src="media/pankod.png" width="350">
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 
@@ -54,8 +54,8 @@ For more detailed usage, checkout our examples.
 
 ## Examples
 
-<div>
- <img width="500" src="media/pullr-gif.gif" >
+<div align="center">
+ <img width="600" src="media/pullr-gif.gif" >
 </div>
 
 We've provided two examples to demonstrate how puulr works and what can be done. See [examples](./examples)
@@ -94,7 +94,6 @@ npm run start:weather
 | **height** <br> \*_required_      | `number`   | Height of your canvas                |
 | **fps** <br> \*_required_         | `number`   | Frames per second of your animations |
 | **makeScene\*** <br> \*_required_ | `function` | [See below](#makeScene)              |
-| ----------------                  | ---        | ----                                 |
 
 <br/>
 
