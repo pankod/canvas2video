@@ -1,0 +1,19 @@
+{
+    "name": "canvas2video_example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start:hello-world": "ts-node src/hello-world.ts",
+        "start:weather": "ts-node src/weather.ts"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.2"
+    },
+    "dependencies": {
+        "gsap": "^3.5.0"
+    }
+}
