@@ -84,8 +84,6 @@ npm run start:weather
 
 ## Options
 
-<br/>
-
 ### **Renderer**
 
 | Properties                        | Type       | Description                          |
