@@ -6,7 +6,7 @@
 <br/>
 <div align="center"> <h3><b>Puulr Canvas to Video</b><h3> </div>
 
-<div align="center"> Simplyfies the way to create a video from canvas content </div>
+<div align="center"> Simplifies the way to create a video from canvas content </div>
 <br/>
 <div align="center">
 
@@ -32,14 +32,14 @@ Puulr helps you to create videos with ease by using [gsap](https://github.com/gr
 
 To install the module, run the following in the command line:
 
-```
-$ npm install puulr --save
+```bash
+npm install puulr --save
 ```
 
 or
 
-```
-$ yarn add puulr
+```bash
+yarn add puulr
 ```
 
 ## Usage
@@ -62,7 +62,7 @@ We've provided two examples to demonstrate how puulr works and what can be done.
 
 ### Installation
 
-```
+```bash
 git clone https://github.com/pankod/puulr.git
 cd examples
 npm i
@@ -70,13 +70,13 @@ npm i
 
 ### Hello World
 
-```
+```bash
 npm run start:hello-world
 ```
 
 ### Weather
 
-```
+```bash
 npm run start:weather
 ```
 
