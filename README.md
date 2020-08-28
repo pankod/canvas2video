@@ -146,10 +146,6 @@ backgroundVideo: {
 
 <br/>
 
-## Notes
-
-As of version 1.1.0 this package is compatible with both iOS and Android.
-
 ## License
 
 [License](./LICENSE)
