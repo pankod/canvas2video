@@ -54,6 +54,10 @@ For more detailed usage, checkout our examples.
 
 ## Examples
 
+<div>
+ <img width="500" src="media/pullr-gif.gif" >
+</div>
+
 We've provided two examples to demonstrate how puulr works and what can be done. See [examples](./examples)
 
 ### Installation
