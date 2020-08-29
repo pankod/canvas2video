@@ -4,6 +4,10 @@
     "description": "canvas to video renderer",
     "main": "dist/index.js",
     "types": "dist/typings/index.d.ts",
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node"
+    },
     "scripts": {
         "build": "rimraf dist && tsc",
         "start": "node dist/index.js",
