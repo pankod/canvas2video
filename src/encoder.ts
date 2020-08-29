@@ -5,6 +5,13 @@ import * as cliProgress from "cli-progress";
 import { Readable } from "stream";
 import { Encoder } from "./types";
 
+const progressBar = new cliProgress.SingleBar({
+    format: `Rendering | {bar} | {percentage}%`,
+    barCompleteChar: "\u2588",
+    barIncompleteChar: "\u2591",
+    hideCursor: true,
+});
+
 const typeCheck = (reject: (reason?: any) => void, config) => {
     const { frameStream, output, backgroundVideo, fps } = config;
     if (!(frameStream instanceof Readable)) {
@@ -19,8 +26,11 @@ const typeCheck = (reject: (reason?: any) => void, config) => {
         reject(new Error(`fps should be an object with input and output properties`));
     }
     if (backgroundVideo) {
+        const { inSeconds, videoPath, outSeconds } = backgroundVideo;
         if (
-            !(backgroundVideo.inSeconds && backgroundVideo.outSeconds && backgroundVideo.videoPath)
+            typeof inSeconds !== "number" ||
+            typeof outSeconds !== "number" ||
+            typeof videoPath !== "string"
         ) {
             reject(new Error("backgroundVideo property is not correctly set"));
         }
@@ -39,97 +49,73 @@ const createDir = (reject: (reason?: any) => void, silent: boolean, output: stri
     }
 };
 
-const encoder: Encoder = (config) => {
-    return new Promise((resolve, reject) => {
+const createFilter = (backgroundVideo: { inSeconds: number; outSeconds: number }) => {
+    const { inSeconds, outSeconds } = backgroundVideo;
+    return [
+        "[1:v]setpts=PTS+" + inSeconds + "/TB[out]",
+        {
+            filter: "overlay",
+            options: {
+                enable: "between(t," + inSeconds + "," + outSeconds + ")",
+                x: "0",
+                y: "0",
+            },
+            inputs: "[0:v][out]",
+            outputs: "tmp",
+        },
+    ];
+};
+
+const percent: (percent?: number) => number = (percent) =>
+    percent ? parseFloat((percent as number).toFixed(2)) : 0;
+
+const outputOptions = [
+    "-preset veryfast",
+    "-crf 24",
+    "-f mp4",
+    "-movflags frag_keyframe+empty_moov",
+    "-pix_fmt yuv420p",
+];
+
+const encoder: Encoder = (config) =>
+    new Promise((resolve, reject) => {
         const { frameStream, output, backgroundVideo, fps, silent = true } = config;
-
         typeCheck(reject, config);
-
         createDir(reject, silent, output);
 
         const outputStream = fs.createWriteStream(output);
-
         const command = ffmpeg();
 
-        if (backgroundVideo) {
-            command.input(backgroundVideo.videoPath);
-        }
+        if (backgroundVideo) command.input(backgroundVideo.videoPath);
 
         command.input(frameStream).inputFPS(fps.input);
-        command.outputOptions([
-            "-preset veryfast",
-            "-crf 24",
-            "-f mp4",
-            "-movflags frag_keyframe+empty_moov",
-            "-pix_fmt yuv420p",
-        ]);
+        command.outputOptions(outputOptions);
         command.fps(fps.output);
 
-        if (!!backgroundVideo) {
-            command.complexFilter(
-                [
-                    "[1:v]setpts=PTS+" + backgroundVideo.inSeconds + "/TB[out]",
-                    {
-                        filter: "overlay",
-                        options: {
-                            enable:
-                                "between(t," +
-                                backgroundVideo.inSeconds +
-                                "," +
-                                backgroundVideo.outSeconds +
-                                ")",
-                            x: "0",
-                            y: "0",
-                        },
-                        inputs: "[0:v][out]",
-                        outputs: "tmp",
-                    },
-                ],
-                "tmp",
-            );
-        }
+        if (backgroundVideo) command.complexFilter(createFilter(backgroundVideo), "tmp");
 
         command.output(outputStream);
 
-        const progressBar = new cliProgress.SingleBar({
-            format: `Rendering | {bar} | {percentage}%`,
-            barCompleteChar: "\u2588",
-            barIncompleteChar: "\u2591",
-            hideCursor: true,
-        });
-
-        command.on("start", function (commandLine) {
-            if (!silent) console.log("Spawned Ffmpeg with command: " + commandLine);
+        command.on("start", () => {
             if (!silent) progressBar.start(100, 0);
         });
 
-        command.on("end", function () {
-            if (!silent) {
-                progressBar.stop();
-                console.log("Processing complete...");
-            }
-            resolve({
-                path: output,
-                stream: outputStream,
-            });
+        command.on("end", () => {
+            if (!silent) progressBar.stop();
+            if (!silent) console.log("Processing complete...");
+            resolve({ path: output, stream: outputStream });
         });
 
-        command.on("progress", function (progress) {
-            if (!silent) {
-                const percent = progress.percent
-                    ? parseFloat((progress.percent as number).toFixed(2))
-                    : 0;
-                progressBar.update(percent);
-            }
+        command.on("progress", (progress) => {
+            if (!silent) progressBar.update(percent(progress.percent));
         });
 
-        command.on("error", function (err: { message: string }) {
+        command.on("error", (err: Error) => {
             if (!silent) console.log("An error occured while processing,", err.message);
             reject(new Error(err.message));
         });
 
         command.run();
     });
-};
 
 export default encoder;

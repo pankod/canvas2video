@@ -27,6 +27,7 @@ describe("encoder function tests", () => {
 
     it("resolves when frameStream is a Readable stream", async () => {
         const output = encoder({
+            silent: false,
             frameStream: stream,
             output: "test/output/test.mp4",
             fps: { input: 30, output: 30 },
@@ -62,6 +63,7 @@ describe("encoder function tests", () => {
 
     it("throws when ffmpeg fails", async () => {
         const output = encoder({
+            silent: false,
             frameStream: stream,
             output: "test/output/test.mp4",
             fps: { input: -30, output: -30 },
@@ -97,9 +99,9 @@ describe("encoder function tests", () => {
             output: "test/output/demo.mp4",
             fps: { input: 30, output: 30 },
             backgroundVideo: {
-                videoPath: "test/output/base.mp4",
-                inSeconds: undefined,
-                outSeconds: undefined,
+                videoPath: undefined,
+                inSeconds: 5,
+                outSeconds: 10,
             },
         });
         expect(output).rejects.toMatchObject(

@@ -27,8 +27,15 @@ const typeCheck = (reject: (reason?: any) => void, config: any) => {
     }
 };
 
-const renderer: Renderer = (config) => {
-    return new Promise((resolve, reject) => {
+const progressBar = new cliProgress.SingleBar({
+    format: `Rendering | {bar} | {percentage}%`,
+    barCompleteChar: "\u2588",
+    barIncompleteChar: "\u2591",
+    hideCursor: true,
+});
+
+const renderer: Renderer = (config) =>
+    new Promise((resolve, reject) => {
         try {
             const { width, height, fps, makeScene, silent = true } = config;
             const canvas = new fabric.StaticCanvas(null, { width, height });
@@ -42,19 +49,11 @@ const renderer: Renderer = (config) => {
 
             gsap.ticker.fps(fps);
 
-            const progressBar = new cliProgress.SingleBar({
-                format: `Rendering | {bar} | {percentage}%`,
-                barCompleteChar: "\u2588",
-                barIncompleteChar: "\u2591",
-                hideCursor: true,
-            });
-
             const renderFrames = () => {
                 anim.progress(currentFrame++ / totalFrames);
                 if (currentFrame <= totalFrames) {
-                    if (!silent) {
-                        progressBar.update(currentFrame);
-                    }
+                    if (!silent) progressBar.update(currentFrame);
+
                     canvas.renderAll();
                     const buffer = Buffer.from(
                         canvas.toDataURL().replace(/^data:\w+\/\w+;base64,/, ""),
@@ -63,10 +62,8 @@ const renderer: Renderer = (config) => {
                     stream.push(buffer);
                     renderFrames();
                 } else {
-                    if (!silent) {
-                        console.log("Rendering complete...");
-                        progressBar.stop();
-                    }
+                    if (!silent) console.log("Rendering complete...");
+                    if (!silent) progressBar.stop();
                     stream.push(null);
                     resolve(stream);
                 }
@@ -74,20 +71,14 @@ const renderer: Renderer = (config) => {
 
             makeScene(fabric, canvas, anim, () => {
                 const duration = anim.duration();
-                totalFrames = Math.ceil((duration / 1) * fps);
+                totalFrames = Math.max(1, Math.ceil((duration / 1) * fps));
 
-                if (totalFrames === 0) {
-                    totalFrames = 1;
-                }
-                if (!silent) {
-                    progressBar.start(totalFrames, 0);
-                }
+                if (!silent) progressBar.start(totalFrames, 0);
                 renderFrames();
             });
         } catch (e) {
             reject(new Error("An error occured in the renderer."));
         }
     });
-};
 
 export default renderer;
