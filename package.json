@@ -20,7 +20,7 @@
         "url": "git+https://github.com/pankod/canvas2video.git"
     },
     "author": "Pankod Inc.",
-    "license": "ISC",
+    "license": "GPL-3.0-only",
     "bugs": {
         "url": "https://github.com/pankod/canvas2video/issues"
     },
