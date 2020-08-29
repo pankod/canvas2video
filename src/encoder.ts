@@ -6,7 +6,7 @@ import { Readable } from "stream";
 import { Encoder } from "./types";
 
 const progressBar = new cliProgress.SingleBar({
-    format: `Rendering | {bar} | {percentage}%`,
+    format: `Processing | {bar} | {percentage}%`,
     barCompleteChar: "\u2588",
     barIncompleteChar: "\u2591",
     hideCursor: true,

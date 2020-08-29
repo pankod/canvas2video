@@ -62,7 +62,7 @@ const renderer: Renderer = (config) =>
                     stream.push(buffer);
                     renderFrames();
                 } else {
-                    if (!silent) console.log("Rendering complete...");
+                    if (!silent) console.log("\nRendering complete...");
                     if (!silent) progressBar.stop();
                     stream.push(null);
                     resolve(stream);
