@@ -1,6 +1,6 @@
 {
     "name": "@pankod/canvas2video",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "canvas to video renderer",
     "main": "dist/index.js",
     "types": "dist/typings/index.d.ts",
