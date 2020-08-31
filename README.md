@@ -6,7 +6,7 @@
 <br/>
 <div align="center"> <h3><b>@pankod/canvas2video</b></h3> </div>
 
-<div align="center"> Simplifies the way to create a video from Canvas </div>
+<div align="center">Create dynamic, data-driven videos on the fly.</div>
 <br/>
 <div align="center">
 
@@ -26,7 +26,17 @@
 
 ## About
 
-@pankod/canvas2video helps you to create a video from Canvas with ease by using  [ffmpeg](https://ffmpeg.org/), [gsap](https://github.com/greensock/GSAP), [fabric](https://github.com/fabricjs/fabric.js) libraries and [Node.js Stream](https://nodejs.org/api/stream.html).
+@pankod/canvas2video is a backend solution for creating and rendering dynamic videos. It lets you build web canvas scenes by using the *Cairo-backed* [fabric](https://github.com/fabricjs/fabric.js) library and add animations with [gsap](https://github.com/greensock/GSAP).
+Your animation timeline will be rendered frame by frame and piped to ffmpeg renderer for the final video output.
+
+## Use Cases
+
+📺 Personalized video advertising
+
+🎞️ Programmatical customization of video templates
+
+⛅ Creating dynamic videos with real-time data (See: [Weather Example ](./examples))
+
 
 ## Getting started
 
@@ -44,11 +54,10 @@ yarn add @pankod/canvas2video
 
 ## Usage
 
-The module exports two different functions `renderer` and `encoder`.
+`renderer` expects a `makeScene` function where you create your canvas animation by using [fabric](https://github.com/fabricjs/fabric.js) and 
+[gsap](https://github.com/greensock/GSAP) methods. It returns a *stream of frames* to be consumed by the `encoder` in the next step.
 
-Define canvas properties and create stream with makeScene function by using fabric and gsap animation library methods. You get a stream as a return value which then you'll use in the `encoder` function to get video output.
-
-You can also set a background video in `encoder` function which will be applied to video with a beautiful filter.
+Below is a basic example of a one-second rotation animation of "Hello World" text. After rendering the animation and encoding the video, the output will be saved to `output/hello-world.mp4`.
 
 ```js
 import { renderer, encoder } from "@pankod/canvas2video";
@@ -85,12 +94,20 @@ const helloWorld = async () => {
             input: 30,
             output: 30,
         },
+        
     });
     console.log("process done,", output.path);
 };
 ```
 
-For more detailed usage, checkout our examples.
+You may refer the following documentations to learn how the construct your own `makeScene` methods:
+
+📃[Fabric.js Documentation](http://fabricjs.com/docs/)
+
+📃[GSAP Documentation](https://greensock.com/docs/)
+
+You can optionally provide the `encoder` function a `backgroundVideo` object. In this case, your animation will be used as an overlay layer and merged with the background video. More information about the usage of background videos is given in the *Options* section.
+
 
 ## Examples
 
@@ -100,7 +117,7 @@ For more detailed usage, checkout our examples.
 
 <br/>
 
-We've provided two examples to demonstrate how canvas2video works and what can be done. See [examples](./examples)
+You'll find two working demos int the [examples](./examples) folder folder of the project. Give them a try by following the steps below:
 
 #### **Check out examples**
 
@@ -144,8 +161,6 @@ $ npm run start:weather
 <br/>
 
 #### **_makeScene_**
-
-Creates a content by using fabric, gsap library methods which comes default with makeScene function.
 
 The function takes 4 arguments(fabric, canvas, anim and compose) which is passed by the `renderer` function.
 
@@ -191,6 +206,16 @@ backgroundVideo: {
 ```
 
 <br/>
+
+## To-do
+
+📌 [Lottie](https://airbnb.design/lottie/) animation support
+
+📌 Thread & concurrency management
+
+📌 Finer control over encoder settings
+
+
 
 ## License
 
