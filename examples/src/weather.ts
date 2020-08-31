@@ -1,6 +1,5 @@
 import { renderer, encoder } from "@pankod/canvas2video";
 import { Linear, Bounce } from "gsap";
-// import { Ease } from "gsap";
 
 const weatherJSON = [
     {

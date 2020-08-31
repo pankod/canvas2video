@@ -4,9 +4,13 @@
 </div>
 
 <br/>
-<div align="center"> <h3><b>@pankod/canvas2video</b></h3><h3><b>Canvas to Video</b><h3> </div>
+<div align="center"> <h3><b>@pankod/canvas2video</b></h3> </div>
 
+<<<<<<< HEAD
 <div align="center">Create dynamic, data-driven videos on the fly.</div>
+=======
+<div align="center"> Simplifies the way to create a video from Canvas </div>
+>>>>>>> eb667f679d005f18a811204103f91c35652cff44
 <br/>
 <div align="center">
 
@@ -26,11 +30,15 @@
 
 ## About
 
+<<<<<<< HEAD
 
 @pankod/canvas2video is a backend solution for creating and rendering dynamic videos. It lets you build web canvas scenes by using the *Cairo-backed* [fabric](https://github.com/fabricjs/fabric.js) library and add animations with [gsap](https://github.com/greensock/GSAP).
 Your animation timeline will be rendered frame by frame and piped to ffmpeg renderer for the final video output.
 
 
+=======
+@pankod/canvas2video helps you to create a video from Canvas with ease by using  [ffmpeg](https://ffmpeg.org/), [gsap](https://github.com/greensock/GSAP), [fabric](https://github.com/fabricjs/fabric.js) libraries and [Node.js Stream](https://nodejs.org/api/stream.html).
+>>>>>>> eb667f679d005f18a811204103f91c35652cff44
 
 ## Getting started
 
@@ -48,11 +56,11 @@ yarn add @pankod/canvas2video
 
 ## Usage
 
-Library exports two different functions `renderer` and `encoder`.
+The module exports two different functions `renderer` and `encoder`.
 
-Define canvas properties and create stream with makeScene function by using fabric and gsap animation library methods. You get a stream as a return which then you'll use in the `encoder` function which convert canvas to video output.
+Define canvas properties and create stream with makeScene function by using fabric and gsap animation library methods. You get a stream as a return value which then you'll use in the `encoder` function to get video output.
 
-You can also define a background video in `encoder` function which will be applied to your canvas with a beautiful filter.
+You can also set a background video in `encoder` function which will be applied to video with a beautiful filter.
 
 ```js
 import { renderer, encoder } from "@pankod/canvas2video";
@@ -106,24 +114,30 @@ For more detailed usage, checkout our examples.
 
 We've provided two examples to demonstrate how canvas2video works and what can be done. See [examples](./examples)
 
-#### **Installation**
+#### **Check out examples**
+
 
 ```bash
-git clone https://github.com/pankod/canvas2video.git
-cd examples
-npm i
+$ git clone https://github.com/pankod/canvas2video.git
+````
+```
+$ cd examples
+```
+```
+$ npm i
+```
+After this, you can run commands at the below then check examples/output directory:
+#### **Example 1**
+
+```bash
+$ npm run start:hello-world
 ```
 
-#### **Hello World**
+
+#### **Example 2**
 
 ```bash
-npm run start:hello-world
-```
-
-#### **Weather**
-
-```bash
-npm run start:weather
+$ npm run start:weather
 ```
 
 <br/>
@@ -134,18 +148,18 @@ npm run start:weather
 
 | Properties                      | Type       | Description                          |
 | ------------------------------- | ---------- | ------------------------------------ |
-| **width** <br> \*_required_     | `number`   | Width of your canvas                 |
-| **height** <br> \*_required_    | `number`   | Height of your canvas                |
-| **fps** <br> \*_required_       | `number`   | Frames per second of your animations |
+| **width** <br> \*_required_     | `number`   | canvas width                 |
+| **height** <br> \*_required_    | `number`   | canvas height               |
+| **fps** <br> \*_required_       | `number`   | animation fps |
 | **makeScene** <br> \*_required_ | `function` | [See below](#makeScene)              |
 
 <br/>
 
 #### **_makeScene_**
 
-You can create contents by using fabric, gsap library methods which comes default with makeScene function.
+Creates a content by using fabric, gsap library methods which comes default with makeScene function.
 
-This function takes 4 arguments(fabric, canvas, anim and compose) which is passed by the `renderer` function.
+The function takes 4 arguments(fabric, canvas, anim and compose) which is passed by the `renderer` function.
 
 ```js
 renderer({
@@ -171,8 +185,8 @@ renderer({
 
 | Properties                        | Type       | Description                         |
 | --------------------------------- | ---------- | ----------------------------------- |
-| **frameStream** <br> \*_required_ | `Readable` | Output of your `renderer` call      |
-| **output** <br> \*_required_      | `string`   | Your output file path               |
+| **frameStream** <br> \*_required_ | `Readable` |  `renderer` function return value    |
+| **output** <br> \*_required_      | `string`   | output file path               |
 | **fps** <br> \*_required_         | `Object`   | `{ input: number, output: number }` |
 | **backgroundVideo**               | `Object`   | [See below](#backgroundVideo)       |
 

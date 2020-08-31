@@ -14,6 +14,7 @@
         "typescript": "^4.0.2"
     },
     "dependencies": {
+        "@pankod/canvas2video": "^1.0.0",
         "gsap": "^3.5.0"
     }
 }
