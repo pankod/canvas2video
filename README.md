@@ -6,7 +6,7 @@
 <br/>
 <div align="center"> <h3><b>@pankod/canvas2video</b></h3><h3><b>Canvas to Video</b><h3> </div>
 
-<div align="center"> Simplifies the way to create a video from canvas content </div>
+<div align="center">Create dynamic, data-driven videos on the fly.</div>
 <br/>
 <div align="center">
 
@@ -26,7 +26,11 @@
 
 ## About
 
-@pankod/canvas2video helps you to create videos with ease by using [gsap](https://github.com/greensock/GSAP) and [fabric](https://github.com/fabricjs/fabric.js) libraries.
+
+@pankod/canvas2video is a backend solution for creating and rendering dynamic videos. It lets you build web canvas scenes by using the *Cairo-backed* [fabric](https://github.com/fabricjs/fabric.js) library and add animations with [gsap](https://github.com/greensock/GSAP).
+Your animation timeline will be rendered frame by frame and piped to ffmpeg renderer for the final video output.
+
+
 
 ## Getting started
 
