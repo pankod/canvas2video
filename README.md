@@ -35,7 +35,7 @@ Your animation timeline will be rendered frame by frame and piped to ffmpeg rend
 
 🎞️ Programmatical customization of video templates
 
-⛅ Creating dynamic videos with real-time data (See: [Weather Example ](./examples))
+⛅ Creating dynamic videos with real-time data (See: [Weather Example ](./examples) - [Youtube](https://www.youtube.com/watch?v=xv8M3ScElv0))
 
 
 ## Getting started
