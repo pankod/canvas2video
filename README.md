@@ -69,7 +69,7 @@ const helloWorld = async () => {
         height: 1080,
         fps: 30,
         makeScene: (fabric, canvas, anim, compose) => {
-            var text = new fabric.Text("Hello world", {
+            const text = new fabric.Text("Hello world", {
                 left: 400,
                 top: 400,
                 fontSize: 100,
