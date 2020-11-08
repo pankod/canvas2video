@@ -73,6 +73,7 @@ const outputOptions = [
     "-preset veryfast",
     "-crf 24",
     "-f mp4",
+    "-vcodec libx264",
     "-movflags frag_keyframe+empty_moov",
     "-pix_fmt yuv420p",
 ];
