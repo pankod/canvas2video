@@ -1,4 +1,4 @@
 import encoder from "./encoder";
-import renderer from "./renderer";
+import renderer, { renderProgress } from "./renderer";
 
-export { encoder, renderer };
+export { encoder, renderer, renderProgress };
