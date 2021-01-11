@@ -15,7 +15,7 @@
 [![npm version](https://img.shields.io/npm/v/@pankod/canvas2video.svg)](https://www.npmjs.com/package/@pankod/canvas2video)
 ![npm](https://img.shields.io/npm/dw/@pankod/canvas2video)
 [![dependencies Status](https://david-dm.org/pankod/canvas2video/status.svg)](https://david-dm.org/pankod/canvas2video)
-[![dev-dependencies Status](https://david-dm.org/pankod/canvas2video/dev-status.svg)](https://david-dm.org/pankod/canvas2video?type=dev)
+[![dev-dependencies Status](https://david-dm.org/pankod/canvas2video/dev-status.svg)](https://david-dm.org/pankod/canvas2video?type=dev) [![Meercode CI Score](https://meercode.io/badge/pankod/canvas2video?type=ci-score&branch=master)](https://meercode.io/pankod/canvas2video)
 
 </div>
 <div align="center">
