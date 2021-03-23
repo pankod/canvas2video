@@ -13,7 +13,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce77e17d733e937fbf3b/maintainability)](https://codeclimate.com/github/pankod/canvas2video/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ce77e17d733e937fbf3b/test_coverage)](https://codeclimate.com/github/pankod/canvas2video/test_coverage)
 [![npm version](https://img.shields.io/npm/v/@pankod/canvas2video.svg)](https://www.npmjs.com/package/@pankod/canvas2video)
-![npm](https://img.shields.io/npm/dw/@pankod/canvas2video)
+![npm](https://img.shields.io/npm/dm/@pankod/canvas2video)
 [![dependencies Status](https://david-dm.org/pankod/canvas2video/status.svg)](https://david-dm.org/pankod/canvas2video)
 [![dev-dependencies Status](https://david-dm.org/pankod/canvas2video/dev-status.svg)](https://david-dm.org/pankod/canvas2video?type=dev) [![Meercode CI Score](https://meercode.io/badge/pankod/canvas2video?type=ci-score&branch=master)](https://meercode.io/pankod/canvas2video)
 
