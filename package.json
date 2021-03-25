@@ -51,6 +51,7 @@
         "ffmpeg-static": "^4.2.7",
         "ffprobe-static": "^3.0.0",
         "fluent-ffmpeg": "^2.1.2",
-        "gsap": "^3.5.0"
+        "gsap": "^3.5.0",
+        "rxjs": "^6.6.3"
     }
 }

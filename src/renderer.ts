@@ -7,6 +7,7 @@ import * as cliProgress from "cli-progress";
 import * as ffmpegPath from "ffmpeg-static";
 import * as ffprobe from "ffprobe-static";
 import { Renderer } from "./types";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobe.path);
@@ -33,6 +34,7 @@ const progressBar = new cliProgress.SingleBar({
     barIncompleteChar: "\u2591",
     hideCursor: true,
 });
+const renderProgressSubject: Subject<number> = new BehaviorSubject(0);
 
 const renderer: Renderer = (config) =>
     new Promise((resolve, reject) => {
@@ -52,6 +54,8 @@ const renderer: Renderer = (config) =>
             const renderFrames = () => {
                 anim.progress(currentFrame++ / totalFrames);
                 if (currentFrame <= totalFrames) {
+                    const percent = 100 * (currentFrame / totalFrames);
+                    renderProgressSubject.next(parseInt(percent.toFixed(2)));
                     if (!silent) progressBar.update(currentFrame);
 
                     canvas.renderAll();
@@ -72,7 +76,6 @@ const renderer: Renderer = (config) =>
             makeScene(fabric, canvas, anim, () => {
                 const duration = anim.duration();
                 totalFrames = Math.max(1, Math.ceil((duration / 1) * fps));
-
                 if (!silent) progressBar.start(totalFrames, 0);
                 renderFrames();
             });
@@ -82,3 +85,4 @@ const renderer: Renderer = (config) =>
     });
 
 export default renderer;
+export const renderProgress: Observable<number> = renderProgressSubject.asObservable();
